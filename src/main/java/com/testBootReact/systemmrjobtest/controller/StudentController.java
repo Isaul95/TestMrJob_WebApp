@@ -4,12 +4,11 @@ import com.testBootReact.systemmrjobtest.model.Student;
 import com.testBootReact.systemmrjobtest.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/student")
+@CrossOrigin
 public class StudentController {
 
     @Autowired
