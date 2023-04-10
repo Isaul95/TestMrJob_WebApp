@@ -1,14 +1,26 @@
-package com.testBootReact.systemmrjobtest.dto;
+package com.testBootReact.systemmrjobtest.model;
 
+import javax.persistence.*;
 
-public class AyudaDTO {
+@Entity
+@Table(name = "ayuda")
+public class Ayuda {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_ayuda")
     private Long id_ayuda;
+    @Column(name = "id_usuario")
     private Long id_usuario;
+    @Column(name = "nombre_completo")
     private String nombre_completo;
+    @Column(name = "telefono")
     private String telefono;
+    @Column(name = "servicio_problema")
     private Long servicio_problema;
+    @Column(name = "mensaje")
     private String mensaje;
+    @Column(name = "email")
     private String email;
 
     public Long getId_ayuda() {

@@ -13,6 +13,8 @@ public class Messages {
      */
     public static final String MSERROR_GUARDAR_USER = "Error al guardar el usuario, intentar de nuevo.";
     public static final String MSEXITO_GUADAR_USER = "Usuario guardado correctamente";
+    public static final String MSEXITO_GUADAR_SERVICES = "Nuevo servicio guardado correctamente";
+    public static final String MSEXITO_GUADAR_SOPORTE = "Contacto a soporte notificado";
 
 
 

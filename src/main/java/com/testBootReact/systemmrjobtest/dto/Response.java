@@ -1,9 +1,12 @@
 package com.testBootReact.systemmrjobtest.dto;
 
+import java.util.List;
+
 public class Response {
 
     private int Code;
     private String Descripcion;
+    private List<?> Result;
 
     public int getCode() {
         return Code;
@@ -21,6 +24,13 @@ public class Response {
         Descripcion = descripcion;
     }
 
+    public List<?> getResult() {
+        return Result;
+    }
+
+    public void setResult(List<?> result) {
+        Result = result;
+    }
 
     /**
      *  -----   Constructures  -----
