@@ -1,6 +1,5 @@
 package com.testBootReact.systemmrjobtest.service;
 
-import com.testBootReact.systemmrjobtest.dto.CatRangoPreciosDTO;
 import com.testBootReact.systemmrjobtest.dto.MisServiciosDTO;
 import com.testBootReact.systemmrjobtest.dto.Response;
 import com.testBootReact.systemmrjobtest.model.*;
@@ -38,9 +37,21 @@ public class MisServiciosServiceImpl implements MisServiciosService{
 
 
     @Override
-    public CatUsuario obtenerServiciosByUsername() {
-        return null;
+    public Response obtenerServiciosByUsername(MisServiciosDTO idUsuario) {
+        Response response = new Response();
+        try{
+            List<Object[]> listServPorCategoria = catServiciosRepository.findServicesCategoriaByUser(idUsuario.getId_usuario());
+            response.setCode(200);
+            response.setResult(listServPorCategoria);
+            response.setDescripcion("Catalogo de todos los servicios");
+
+        } catch (Exception e){
+            Logger.info("Error en (MisServiciosServiceImpl.Clas) -> obtenerServiciosByUsername() " + e.getMessage());
+            return new Response(500, Messages.MS500);
+        }
+        return response;
     }
+
 
     @Override
     //@Transactional
@@ -64,6 +75,7 @@ public class MisServiciosServiceImpl implements MisServiciosService{
             services.setHorario_servicio(datos.getHorario_servicio());
             services.setDias_festivos(datos.getDias_festivos());
             services.setHorario_festivo(datos.getHorario_festivo());
+            services.setId_usuario(datos.getId_usuario());
 
             catServiciosRepository.save(services);
             Logger.info("Nuevo servicio guardado exitosamente...!");
@@ -79,13 +91,9 @@ public class MisServiciosServiceImpl implements MisServiciosService{
     }
 
 
-
-
-    @Override
-    public List<String> obtenerCatalogoServicios(MisServiciosDTO idUsuario) {
-        return catServiciosRepository.findAllServicesUsuario(idUsuario);
-    }
-
+    /**
+     * Obtener catalogos
+     */
 
     @Override
     public Response obtenerCatalogoPrecios() {
@@ -200,7 +208,6 @@ public class MisServiciosServiceImpl implements MisServiciosService{
         return response;
     }
 
-
     @Override
     public Response obtenerCatalogoHorarioFestivo() {
         Response response = new Response();
@@ -216,5 +223,6 @@ public class MisServiciosServiceImpl implements MisServiciosService{
         }
         return response;
     }
+
 
 }

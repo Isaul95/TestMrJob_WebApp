@@ -7,4 +7,5 @@ public interface AyudaService {
 
     Response guardarContactoSoporte(AyudaDTO datos);
 
+    Response obtenerCatalogoServicios();
 }

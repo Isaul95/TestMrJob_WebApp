@@ -24,15 +24,18 @@ public class AyudaController {
 
     @Autowired
     private AyudaService ayudaService;
-    @Autowired
-    private MisServiciosService misServiciosService;
 
     /**
-     * Get lista todos servicios - Pantalla Ayuda
+     * Get lista todos servicios que presenta problemas el usuario - Pantalla Ayuda
      */
-    @PostMapping("/getServicios")
-    public List<String> getServiciosUsuario(@RequestBody MisServiciosDTO idUsuario) {
-        return misServiciosService.obtenerCatalogoServicios(idUsuario);
+    @GetMapping("/getCatServicios")
+    public Response getCatServicios() throws Exception{
+        try{
+            return ayudaService.obtenerCatalogoServicios();
+        } catch (Exception e){
+            Logger.info("Error en (AyudaController.Clas) -> getCatServicios()" + e.getMessage());
+            return new Response(500, Messages.MS500);
+        }
     }
 
 
@@ -50,3 +53,19 @@ public class AyudaController {
     }
 
 }
+/*
+
+Servicio presenta problemas: GET -> http://localhost:8191/ayuda/getCatServicios
+
+
+Contacto a soporte: POST -> http://localhost:8191/ayuda/addContactoAyuda
+{
+    "id_usuario":"20",
+    "nombre_completo":"Diego Luna Core",
+    "telefono":"7331170053",
+    "servicio_problema":"5",
+    "mensaje":"No puedo agendar un nuevo servicio, me dice Error servicio duplicado..!",
+    "email":"rihr.952@gmail.com"
+}
+
+ */

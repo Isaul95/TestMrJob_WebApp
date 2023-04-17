@@ -4,11 +4,13 @@ import com.testBootReact.systemmrjobtest.dto.AyudaDTO;
 import com.testBootReact.systemmrjobtest.dto.Response;
 import com.testBootReact.systemmrjobtest.model.Ayuda;
 import com.testBootReact.systemmrjobtest.repository.AyudaRepository;
+import com.testBootReact.systemmrjobtest.repository.CatServiciosRepository;
 import com.testBootReact.systemmrjobtest.utilerias.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 
 @Service
@@ -18,6 +20,28 @@ public class AyudaServiceImpl implements AyudaService{
 
     @Autowired
     private AyudaRepository ayudaRepository;
+    @Autowired
+    private CatServiciosRepository catServiciosRepository;
+
+    /**
+     * Get all del catalogo de servicios para pantalla de Ayuda
+     * @return
+     */
+    @Override
+    public Response obtenerCatalogoServicios() {
+        Response response = new Response();
+        try{
+            List<Object[]> listCatServices = catServiciosRepository.findAllCatServices();
+            response.setCode(200);
+            response.setResult(listCatServices);
+            response.setDescripcion("Catalogo de todos los servicios");
+
+        } catch (Exception e){
+            Logger.info("Error en (AyudaServiceImpl.Clas) -> obtenerCatalogoServicios() " + e.getMessage());
+            return new Response(500, Messages.MS500);
+        }
+        return response;
+    }
 
 
     @Override
@@ -45,6 +69,5 @@ public class AyudaServiceImpl implements AyudaService{
         }
         return response;
     }
-
 
 }

@@ -21,12 +21,16 @@ public class MisServiciosController {
     private MisServiciosService misServiciosService;
 
     /**
-     * Get todos servicios asignados al Usuarios - Pantalla Mis servicios
-     * @param -u-s-e-r
+     * Get todos servicios asignados al Usuarios - Pantalla Mis servicios (Por Categoria)
      */
-    @GetMapping("/")
-    public CatUsuario obtenerServiciosXUsuario() {
-        return misServiciosService.obtenerServiciosByUsername();
+    @PostMapping("/getServiciosByUsuario")
+    public Response obtenerServiciosXUsuario(@RequestBody MisServiciosDTO idUsuario) throws Exception{
+        try{
+            return misServiciosService.obtenerServiciosByUsername(idUsuario);
+        } catch (Exception e){
+            Logger.info("Error en (MisServiciosController.Clas) -> guardarNuevoServicioDelUsuario" + e.getMessage());
+            return new Response(500, Messages.MS500);
+        }
     }
 
 
@@ -42,6 +46,7 @@ public class MisServiciosController {
             return new Response(500, Messages.MS500);
         }
     }
+
 
 
     /** --------------     Obtener catalogos - combos en pantalla de Mis servicios    ---------------  */

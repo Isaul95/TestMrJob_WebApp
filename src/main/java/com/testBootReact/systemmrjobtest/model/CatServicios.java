@@ -42,6 +42,8 @@ public class CatServicios {
     private String dias_festivos;
     @Column(name = "horario_festivo")
     private Long horario_festivo;
+    @Column(name = "id_usuario")
+    private Long id_usuario;
 
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "servicio")
@@ -181,6 +183,14 @@ public class CatServicios {
 
     public void setHorario_festivo(Long horario_festivo) {
         this.horario_festivo = horario_festivo;
+    }
+
+    public Long getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(Long id_usuario) {
+        this.id_usuario = id_usuario;
     }
 
     public CatServicios() {

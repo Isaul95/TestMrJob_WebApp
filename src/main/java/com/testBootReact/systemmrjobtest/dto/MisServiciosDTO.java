@@ -18,6 +18,7 @@ public class MisServiciosDTO {
     private Long horario_servicio;
     private String dias_festivos;
     private Long horario_festivo;
+    private Long id_usuario;
 
     public Long getId_servicio() {
         return id_servicio;
@@ -145,5 +146,13 @@ public class MisServiciosDTO {
 
     public void setHorario_festivo(Long horario_festivo) {
         this.horario_festivo = horario_festivo;
+    }
+
+    public Long getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(Long id_usuario) {
+        this.id_usuario = id_usuario;
     }
 }
