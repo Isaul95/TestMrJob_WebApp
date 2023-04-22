@@ -13,7 +13,7 @@ public class UsuarioServicios {
     private CatUsuario usuario;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private CatServicios servicio;
+    private detalleServicios servicio;
 
     // constructor vacio
     public UsuarioServicios() {
@@ -36,11 +36,11 @@ public class UsuarioServicios {
         this.usuario = usuario;
     }
 
-    public CatServicios getServicio() {
+    public detalleServicios getServicio() {
         return servicio;
     }
 
-    public void setServicio(CatServicios servicio) {
+    public void setServicio(detalleServicios servicio) {
         this.servicio = servicio;
     }
 }

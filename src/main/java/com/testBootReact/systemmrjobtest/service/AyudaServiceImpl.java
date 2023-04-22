@@ -4,7 +4,7 @@ import com.testBootReact.systemmrjobtest.dto.AyudaDTO;
 import com.testBootReact.systemmrjobtest.dto.Response;
 import com.testBootReact.systemmrjobtest.model.Ayuda;
 import com.testBootReact.systemmrjobtest.repository.AyudaRepository;
-import com.testBootReact.systemmrjobtest.repository.CatServiciosRepository;
+import com.testBootReact.systemmrjobtest.repository.DetalleServiciosRepository;
 import com.testBootReact.systemmrjobtest.utilerias.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public class AyudaServiceImpl implements AyudaService{
     @Autowired
     private AyudaRepository ayudaRepository;
     @Autowired
-    private CatServiciosRepository catServiciosRepository;
+    private DetalleServiciosRepository catServiciosRepository;
 
     /**
      * Get all del catalogo de servicios para pantalla de Ayuda

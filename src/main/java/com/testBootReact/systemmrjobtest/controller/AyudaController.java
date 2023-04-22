@@ -1,19 +1,13 @@
 package com.testBootReact.systemmrjobtest.controller;
 
 import com.testBootReact.systemmrjobtest.dto.AyudaDTO;
-import com.testBootReact.systemmrjobtest.dto.MisServiciosDTO;
 import com.testBootReact.systemmrjobtest.dto.Response;
-import com.testBootReact.systemmrjobtest.model.Ayuda;
-import com.testBootReact.systemmrjobtest.model.CatServicios;
 import com.testBootReact.systemmrjobtest.service.AyudaService;
-import com.testBootReact.systemmrjobtest.service.MisServiciosService;
 import com.testBootReact.systemmrjobtest.utilerias.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/ayuda")

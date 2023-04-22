@@ -4,17 +4,12 @@ import com.testBootReact.systemmrjobtest.dto.CatUsuarioDTO;
 import com.testBootReact.systemmrjobtest.dto.Response;
 import com.testBootReact.systemmrjobtest.excepciones.UsuarioFoundException;
 import com.testBootReact.systemmrjobtest.model.*;
-import com.testBootReact.systemmrjobtest.repository.CatNegociosRepository;
-import com.testBootReact.systemmrjobtest.repository.CatRolRepository;
-import com.testBootReact.systemmrjobtest.repository.CatServiciosRepository;
-import com.testBootReact.systemmrjobtest.repository.CatUsuarioRepository;
+import com.testBootReact.systemmrjobtest.repository.*;
 import com.testBootReact.systemmrjobtest.utilerias.Messages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Set;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -23,13 +18,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private CatUsuarioRepository catUsuarioRepository;
     @Autowired
-    private CatRolRepository catRolRepository;
-    //@Autowired
-    //private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private CatServiciosRepository catServiciosRepository;
+    private DetalleServiciosRepository detalleServiciosRepository;
     @Autowired
     private CatNegociosRepository catNegociosRepository;
+    @Autowired
+    private CatServiciosRepository catServiciosRepository;
 
     /**
      * Save user
@@ -39,86 +32,56 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Response guardarUsuario(CatUsuarioDTO catUsuarioDTO) {
         Response response = new Response();
-        CatRol rol = new CatRol();
-        CatUsuario user = new CatUsuario();
-        UsuarioRol usuarioRol = new UsuarioRol();
-        UsuarioServicios usuarioService = new UsuarioServicios();
-        UsuarioNegocios usuarioNegocio = new UsuarioNegocios();
-        CatServicios serv= null;
+        CatUsuario newUser = new CatUsuario();
+        CatServicios servAgregado = null;
         CatNegocios negoc= null;
-
         try {
+
             CatUsuario existeUsuario = catUsuarioRepository.findByUsername(catUsuarioDTO.getUsername());
 
             if(existeUsuario != null){
                 Logger.info("El usuario ya Existe en la DB...!");
-                throw new UsuarioFoundException("El usuario ya Existe...!");
+                throw new UsuarioFoundException("El usuario ya Existe en nuestra base de datos.");
             }else{
 
                 if (catUsuarioDTO.getTipoServicioOfrece() == null || catUsuarioDTO.getTipoServicioOfrece().isEmpty() &&
-                        catUsuarioDTO.getNombreNegocio() == null || catUsuarioDTO.getNombreNegocio().isEmpty()) {
-                    //JOBERS_(clientes)
-                  // rol.setIdRol(1L);
-                    user.setIdRol(1L); /** ----------- Isaul agregando ir rol en la tabla de usuarios...........*/
+                    catUsuarioDTO.getNombreNegocio() == null || catUsuarioDTO.getNombreNegocio().isEmpty()) {
+                    // 1 = ROL_JOBERS = (clientes)
+                    newUser.setIdRol(1L);
                 }else{
-                    Logger.info("El usuario es JOB_2022...!");
+                        Logger.info("El usuario en registro es un JOB.!");
 
-                    CatServicios servicios = new CatServicios();
-                        servicios.setNombre_servicio(catUsuarioDTO.getTipoServicioOfrece());
-                        servicios.setDescripcion("TEST CODE.......Descripcion");
-                        serv = catServiciosRepository.save(servicios);
+                        CatServicios newServicios = new CatServicios();
+                        newServicios.setTipo_servicio(catUsuarioDTO.getTipoServicioOfrece());
+                           servAgregado = catServiciosRepository.save(newServicios);
 
-                    CatNegocios negocio = new CatNegocios();
-                        negocio.setIdServicios(serv.getId_servicio()); /** ----------- Isaul agregando ir negocio en la tabla de usuarios...........*/
+                        CatNegocios negocio = new CatNegocios();
+                        negocio.setIdServicios(servAgregado.getId_tipo()); /** --- agregando id_servicio en la tabla de negocios ---*/
                         negocio.setNombre(catUsuarioDTO.getNombreNegocio());
-                        negocio.setDomicilio("TEST CODE.......Domicilio");
-                        negocio.setDescripcion("TEST CODE.....Descripcion");
-                        negoc = catNegociosRepository.save(negocio);
+                           negoc = catNegociosRepository.save(negocio);
 
-                    // JOB_(Prestador de servicio)
-                    // rol.setIdRol(2L);
-                      user.setIdRol(2L);
-
-
-                    /* Usuario to nname de su negocios */
-                /*usuarioNegocio.setUsuario(user);
-                usuarioNegocio.setNegocio(negoc);
-                    Set<UsuarioNegocios> usuarioNegoc = new HashSet<>();
-                    usuarioNegoc.add(usuarioNegocio);*/
-
-                    user.setIdNegocios(negoc.getId()); /** ----------- Isaul agregando ir negocio en la tabla de usuarios...........*/
+                    // 2 = ROL_JOB = (Prestador de servicio)
+                    newUser.setIdRol(2L);
+                    newUser.setIdNegocios(negoc.getId()); /** --- Isaul agregando ir negocio en la tabla de usuarios ---*/
                 }
-                //user.setId_usuario(catUsuarioDTO.getId_usuario());
-                //user.setNombre(catUsuarioDTO.getNombre());
-                //user.setPrimer_apellido(catUsuarioDTO.getPrimer_apellido());
-                //user.setSegundo_apellido(catUsuarioDTO.getSegundo_apellido());
-                user.setNombre_completo(catUsuarioDTO.getNombre_completo());
-                user.setEmail(catUsuarioDTO.getEmail());
-//                user.setActivo(catUsuarioDTO.getActivo());
-                user.setActivo(1);
-                user.setTelefono(catUsuarioDTO.getTelefono());
-                user.setUsername(catUsuarioDTO.getEmail());
 
-                /* Usuario to rol */
-                /*usuarioRol.setUsuario(user);
-                usuarioRol.setRol(rol);
-                    Set<UsuarioRol> usuarioRoles = new HashSet<>();
-                    usuarioRoles.add(usuarioRol);*/
+                newUser.setNombre_completo(catUsuarioDTO.getNombre_completo());
+                newUser.setEmail(catUsuarioDTO.getEmail());
+                newUser.setActivo(1);
 
-                /* Usuario to servicios que ofrecen */
-                /*usuarioService.setUsuario(user);
-                usuarioService.setServicio(serv);
-                    Set<UsuarioServicios> usuarioServic = new HashSet<>();
-                    usuarioServic.add(usuarioService);*/
+                // Encriptamos la contraseña que trae del front el obj -> usuarioEntity --> ????????????
+                newUser.setPassword(catUsuarioDTO.getPassword());
+                newUser.setTelefono(catUsuarioDTO.getTelefono());
+                newUser.setUsername(catUsuarioDTO.getEmail());
+                    existeUsuario = catUsuarioRepository.save(newUser);
 
-
-                // Encriptamos la contraseña que trae del front el obj -> usuarioEntity
-                user.setPassword(catUsuarioDTO.getPassword());
-
-                //user.getUsuarioRoles().addAll(usuarioRoles);
-                //user.getUsuarioServicios().addAll(usuarioServic);
-                //user.getUsuarioNegocios().addAll(usuarioNegoc);
-                existeUsuario = catUsuarioRepository.save(user);
+            /**
+             * Se hace el registro en table detalle_servicios para tener el servicio asociado al JOB y mostrar los servicios en Pantalla -> Mis Servicios
+             */
+                detalleServicios detServiceAgregado = new detalleServicios();
+                detServiceAgregado.setId_tipo_servicio(servAgregado.getId_tipo());
+                detServiceAgregado.setId_usuario(existeUsuario.getId_usuario());
+                    detalleServiciosRepository.save(detServiceAgregado);
 
                 Logger.info("Usuario guardado exitosamente...!");
                 response.setCode(200);
@@ -127,7 +90,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         } catch (Exception e){
             response.setCode(500);
             response.setDescripcion(Messages.MSERROR_GUARDAR_USER);
-            Logger.error("Error en (UsuarioServiceImpl.Clas) -> guardarUsuario");
+            Logger.error("Error en (UsuarioServiceImpl.Clas) -> guardarUsuario()");
         }
         return response;
     }

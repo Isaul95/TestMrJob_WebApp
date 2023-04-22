@@ -1,43 +1,79 @@
-package com.testBootReact.systemmrjobtest.dto;
+package com.testBootReact.systemmrjobtest.model;
 
-public class MisServiciosDTO {
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-    private Long id_servicio;
-    //private String nombre_servicio;
-    private String descripcion;
-    private String telefono;
-    private String whatsapp;
-    private Long rango_precios;
-    //private Long tipo_servicios;
-    private String direccion;
-    private String codigo_postal;
-    private Long colonia;
-    private Long estado;
-    private Long rango_servicio;
-    private Long dias_servicio;
-    private Long horario_servicio;
-    private String dias_festivos;
-    private Long horario_festivo;
-    private Long id_usuario;
+@Entity
+@Table(name = "detalle_servicios")
+public class detalleServicios {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_detalle")
+    private Long id_detalle;
+    @Column(name = "id_tipo_servicio")
     private Long id_tipo_servicio;
-    private String otro_tipo_servicio;
-    private String otro_kilometro;
+    // @Column(name = "nombre_servicio")  // no se usa en esta version
+    // private String nombre_servicio; // no se usa en esta version
+    @Column(name = "descripcion")
+    private String descripcion;
+    @Column(name = "telefono")
+    private String telefono;
+    @Column(name = "whatsapp")
+    private String whatsapp;
+    @Column(name = "rango_precios")
+    private Long rango_precios;
+    // @Column(name = "tipo_servicios")  // no se usa en esta version
+    // private Long tipo_servicios;  // no se usa en esta version
+    @Column(name = "direccion")
+    private String direccion;
+    @Column(name = "codigo_postal")
+    private String codigo_postal;
+    @Column(name = "colonia")
+    private Long colonia;
+    @Column(name = "estado")
+    private Long estado;
+    @Column(name = "rango_servicio")
+    private Long rango_servicio;
+    @Column(name = "dias_servicio")
+    private Long dias_servicio;
+    @Column(name = "horario_servicio")
+    private Long horario_servicio;
+    @Column(name = "dias_festivos")
+    private String dias_festivos;
+    @Column(name = "horario_festivo")
+    private Long horario_festivo;
+    @Column(name = "id_usuario")
+    private Long id_usuario;
 
-    public Long getId_servicio() {
-        return id_servicio;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "servicio")
+    private Set<UsuarioServicios> usuarioServicios = new HashSet<>();
+
+    public Long getId_detalle() {
+        return id_detalle;
     }
 
-    public void setId_servicio(Long id_servicio) {
-        this.id_servicio = id_servicio;
+    public void setId_detalle(Long id_detalle) {
+        this.id_detalle = id_detalle;
     }
 
-//    public String getNombre_servicio() {
-//        return nombre_servicio;
-//    }
+    public Long getId_tipo_servicio() {
+        return id_tipo_servicio;
+    }
 
-//    public void setNombre_servicio(String nombre_servicio) {
-//        this.nombre_servicio = nombre_servicio;
-//    }
+    public void setId_tipo_servicio(Long id_tipo_servicio) {
+        this.id_tipo_servicio = id_tipo_servicio;
+    }
+
+    //public String getNombre_servicio() {
+        //return nombre_servicio;
+        //}
+
+    //public void setNombre_servicio(String nombre_servicio) {
+    //  this.nombre_servicio = nombre_servicio;
+    //}
 
     public String getDescripcion() {
         return descripcion;
@@ -45,6 +81,14 @@ public class MisServiciosDTO {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Set<UsuarioServicios> getUsuarioServicios() {
+        return usuarioServicios;
+    }
+
+    public void setUsuarioServicios(Set<UsuarioServicios> usuarioServicios) {
+        this.usuarioServicios = usuarioServicios;
     }
 
     public String getTelefono() {
@@ -159,27 +203,6 @@ public class MisServiciosDTO {
         this.id_usuario = id_usuario;
     }
 
-    public Long getId_tipo_servicio() {
-        return id_tipo_servicio;
-    }
-
-    public void setId_tipo_servicio(Long id_tipo_servicio) {
-        this.id_tipo_servicio = id_tipo_servicio;
-    }
-
-    public String getOtro_tipo_servicio() {
-        return otro_tipo_servicio;
-    }
-
-    public void setOtro_tipo_servicio(String otro_tipo_servicio) {
-        this.otro_tipo_servicio = otro_tipo_servicio;
-    }
-
-    public String getOtro_kilometro() {
-        return otro_kilometro;
-    }
-
-    public void setOtro_kilometro(String otro_kilometro) {
-        this.otro_kilometro = otro_kilometro;
+    public detalleServicios() {
     }
 }

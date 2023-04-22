@@ -2,7 +2,6 @@ package com.testBootReact.systemmrjobtest.controller;
 
 import com.testBootReact.systemmrjobtest.dto.MisServiciosDTO;
 import com.testBootReact.systemmrjobtest.dto.Response;
-import com.testBootReact.systemmrjobtest.model.CatUsuario;
 import com.testBootReact.systemmrjobtest.service.MisServiciosService;
 import com.testBootReact.systemmrjobtest.utilerias.Messages;
 import org.slf4j.Logger;
@@ -162,3 +161,40 @@ public class MisServiciosController {
     }
 
 }
+
+
+/*
+----  1.- Consultar servicios que tiene el usuario que ingresa por Campo -> categoria_servicio y -> Todos los campos de Mi servicios
+-- Mandar el identificador del usuario que se extrae el iniciar session -> (Me falta mostrar el nombre del negocio NO ME KEDO CLARO )
+POST -> http://localhost:8191/MisServicios/getServiciosByUsuario
+{
+    "id_usuario":"23"
+}
+
+
+---2.- add new services
+Si el campo de -> id_tipo_servicio va en null es xq la categoria va en otro campo-> otro_tipo_servicio, se va agregar un nuevo servicio en el catalogo -> cat_servicios
+Si el campo de -> rango_servicio va en null es xq el nuevo kilometro va en otro campo-> otro_kilometro, se va agregar un nuevo rango de kilometro en el catalogo -> cat_rango_servicio
+
+{
+    "id_tipo_servicio":"",
+    "otro_tipo_servicio":"Zapatería",
+    "descripcion":"ZAPATOS",
+    "telefono":"5555555555",
+    "whatsapp":"8888888888",
+    "rango_precios":"3",
+    "direccion":"Chilpancingo de los Bravos, Guerrero",
+    "codigo_postal":"40060",
+    "colonia":"2",
+    "estado":"4",
+    "rango_servicio":"",
+    "otro_kilometro" : "0 kilometro",
+    "dias_servicio":"2",
+    "horario_servicio":"3",
+    "dias_festivos":"Si",
+    "horario_festivo":"3",
+    "id_usuario":"23"
+}
+
+
+ */

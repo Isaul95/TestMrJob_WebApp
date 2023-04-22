@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -17,11 +19,11 @@ public class MisServiciosServiceImpl implements MisServiciosService{
     private static Logger Logger = LoggerFactory.getLogger(AyudaServiceImpl.class);
 
     @Autowired
-    private CatServiciosRepository catServiciosRepository;
+    private DetalleServiciosRepository detalleServiciosRepository;
     @Autowired
     private CatRangoPreciosRepository catRangoPreciosRepository;
     @Autowired
-    private CatTipoServiciosRepository catTipoServiciosRepository;
+    private CatServiciosRepository catServiciosRepository;
     @Autowired
     private CatColoniaRepository catColoniaRepository;
     @Autowired
@@ -40,7 +42,7 @@ public class MisServiciosServiceImpl implements MisServiciosService{
     public Response obtenerServiciosByUsername(MisServiciosDTO idUsuario) {
         Response response = new Response();
         try{
-            List<Object[]> listServPorCategoria = catServiciosRepository.findServicesCategoriaByUser(idUsuario.getId_usuario());
+            List<Object[]> listServPorCategoria = detalleServiciosRepository.findServicesCategoriaByUser(idUsuario.getId_usuario().intValue());
             response.setCode(200);
             response.setResult(listServPorCategoria);
             response.setDescripcion("Catalogo de todos los servicios");
@@ -54,30 +56,49 @@ public class MisServiciosServiceImpl implements MisServiciosService{
 
 
     @Override
-    //@Transactional
+    @Transactional
     public Response agregarNuevoServicioDelUsuario(MisServiciosDTO datos) {
         Response response = new Response();
-        CatServicios services = new CatServicios();
-
+        detalleServicios services = new detalleServicios();
+        CatServicios serviceAgregado = null;
+        CatRangoServicio rangoAgregado = null;
         try {
-            services.setNombre_servicio(datos.getNombre_servicio());
+
+            // Si el campo -> id_tipo_servicio viene en null es por que se debe agregar un nuevo servicio en el catalogo en -> CAT_SERVICIOS
+            if(datos.getId_tipo_servicio() == null){
+                Logger.info("Ingresa a registrar un nuevo tipo de servicio...!");
+                CatServicios newServices = new CatServicios();
+                newServices.setTipo_servicio(datos.getOtro_tipo_servicio());
+                serviceAgregado = catServiciosRepository.save(newServices);
+                Logger.info("Nuevo servicio agregado -> ID_SERVICIOS_NUEVO: {} - NOMBRE_SERVICIO_NUEVO: {}", serviceAgregado.getId_tipo(), serviceAgregado.getTipo_servicio());
+            }
+
+            // Si el campo -> rango_servicio viene en null es por que se debe agregar un nuevo rango de servicio en el catalogo en -> rango_servicio
+            if(datos.getRango_servicio() == null){
+                Logger.info("Ingresa a registrar un nuevo tipo de servicio...!");
+                CatRangoServicio newRango = new CatRangoServicio();
+                newRango.setRango(datos.getOtro_kilometro());
+                rangoAgregado = catRangoServicioRepository.save(newRango);
+                Logger.info("Nuevo kilometro agregado -> ID_KILOMETRO_NUEVO: {} - NOMBRE_KILOMETRO_NUEVO: {}", rangoAgregado.getId_rango(), rangoAgregado.getRango());
+            }
+
+            services.setId_tipo_servicio(datos.getId_tipo_servicio() != null ? datos.getId_tipo_servicio() : serviceAgregado.getId_tipo());
             services.setDescripcion(datos.getDescripcion());
             services.setTelefono(datos.getTelefono());
             services.setWhatsapp(datos.getWhatsapp());
             services.setRango_precios(datos.getRango_precios());
-            services.setTipo_servicios(datos.getTipo_servicios());
             services.setDireccion(datos.getDireccion());
             services.setCodigo_postal(datos.getCodigo_postal());
             services.setEstado(datos.getEstado());
             services.setColonia(datos.getColonia());
-            services.setRango_servicio(datos.getRango_servicio());
+            services.setRango_servicio(datos.getRango_servicio() != null ? datos.getRango_servicio() : rangoAgregado.getId_rango());
             services.setDias_servicio(datos.getDias_servicio());
             services.setHorario_servicio(datos.getHorario_servicio());
             services.setDias_festivos(datos.getDias_festivos());
             services.setHorario_festivo(datos.getHorario_festivo());
             services.setId_usuario(datos.getId_usuario());
 
-            catServiciosRepository.save(services);
+            detalleServiciosRepository.save(services);
             Logger.info("Nuevo servicio guardado exitosamente...!");
             response.setCode(200);
             response.setDescripcion(Messages.MSEXITO_GUADAR_SERVICES);
@@ -116,7 +137,7 @@ public class MisServiciosServiceImpl implements MisServiciosService{
     public Response obtenerCatalogoServicios() {
         Response response = new Response();
         try{
-            List<CatTipoServicios> listServices = catTipoServiciosRepository.findAll();
+            List<CatServicios> listServices = catServiciosRepository.findAll();
             response.setCode(200);
             response.setResult(listServices);
             response.setDescripcion("Datos del catalogo Tipo de servicios");
