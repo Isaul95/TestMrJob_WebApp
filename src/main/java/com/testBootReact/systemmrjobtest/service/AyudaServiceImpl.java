@@ -23,6 +23,9 @@ public class AyudaServiceImpl implements AyudaService{
     @Autowired
     private DetalleServiciosRepository catServiciosRepository;
 
+    public AyudaServiceImpl() {
+    }
+
     /**
      * Get all del catalogo de servicios para pantalla de Ayuda
      * @return
