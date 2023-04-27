@@ -8,12 +8,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-//@SpringBootApplication
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
-@EnableScheduling
+@SpringBootApplication
+//@Configuration
+//@EnableAutoConfiguration
+//@ComponentScan
+//@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
+//@EnableScheduling
 public class SystemMrjobTestApplication {
 
 	public static void main(String[] args) {
