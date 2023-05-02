@@ -69,7 +69,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 newUser.setEmail(catUsuarioDTO.getEmail());
                 newUser.setActivo(1);
 
-                // Encriptamos la contraseña que trae del front el obj -> usuarioEntity --> ????????????
+                // La contraseña no esta emcriptada
                 newUser.setPassword(catUsuarioDTO.getPassword());
                 newUser.setTelefono(catUsuarioDTO.getTelefono());
                 newUser.setUsername(catUsuarioDTO.getEmail());
@@ -78,10 +78,13 @@ public class UsuarioServiceImpl implements UsuarioService {
             /**
              * Se hace el registro en table detalle_servicios para tener el servicio asociado al JOB y mostrar los servicios en Pantalla -> Mis Servicios
              */
+            if (catUsuarioDTO.getTipoServicioOfrece() != null && catUsuarioDTO.getNombreNegocio() != null){
+System.out.println("CONDICION -> " + catUsuarioDTO.getTipoServicioOfrece() + " ->" + catUsuarioDTO.getNombreNegocio());
                 detalleServicios detServiceAgregado = new detalleServicios();
                 detServiceAgregado.setId_tipo_servicio(servAgregado.getId_tipo());
                 detServiceAgregado.setId_usuario(existeUsuario.getId_usuario());
                     detalleServiciosRepository.save(detServiceAgregado);
+            }
 
                 Logger.info("Usuario guardado exitosamente...!");
                 response.setCode(200);
